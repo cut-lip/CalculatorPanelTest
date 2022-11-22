@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Begin to construct expression generator.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CalculatorPanelEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelEval.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OracleEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OracleEval.java" afterDir="false" />
-    </list>
+    <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Begin to construct expression generator." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,7 +43,7 @@
       <option name="presentableId" value="Default" />
       <updated>1668973094421</updated>
       <workItem from="1668973095874" duration="2346000" />
-      <workItem from="1669098341657" duration="2347000" />
+      <workItem from="1669098341657" duration="2375000" />
     </task>
     <task id="LOCAL-00001" summary="Build framework for test client.">
       <created>1668975257511</created>
@@ -57,7 +52,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668975257511</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Begin to construct expression generator.">
+      <created>1669100768265</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1669100768265</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
