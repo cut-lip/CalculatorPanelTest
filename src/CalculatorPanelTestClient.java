@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 
 // This is a unit tester for the CalculatorPanel application, used to generate
 // and evaluate randomized test expressions using the CalculatorPanel
@@ -17,21 +19,43 @@ public class CalculatorPanelTestClient {
         // Is a long really necessary here?
         long testCases = s.nextLong();
 
-        // Construct test case generators.:
+        // Construct test case evaluators:
         CalculatorPanelEval calcEval = new CalculatorPanelEval();
         OracleEval oracleEval = new OracleEval();
+
+        Random r = new Random();
         // Okay to use long in for loop?
         for (long i = 0; i < testCases; i++)
         {
-            String testExpr = ""; // Use expression generator here
+            ArrayList<String> testExpr = generateExpression(r); // Use expression generator here
 
             // Compare results of different evaluators
             double r1 = calcEval.evaluate(testExpr);
-            double r2 = calcEval.evaluate(testExpr);
+            double r2 = oracleEval.evaluate(testExpr);
         }
 
         // Provide statistics for overall result of test
     }
 
+    private static ArrayList<String> generateExpression(Random r)
+    {
+        // Generate a random expression
+        // Randomize by SIZE, ORDER, and COMPLEXITY
+        int exprSize = r.nextInt(30);
+
+        // He said it shouldn't be a for loop
+        int count = 0;
+        while (count < exprSize)
+        {
+            // Add elements to expression based on current available
+            // tokens and probability
+
+            count++;
+        }
+
+
+
+        return new ArrayList<String>();
+    }
 
 }
