@@ -17,10 +17,10 @@ public class CalculatorPanelEval {
     {}
 
     // Evaluate using CalculatorPanel functionality
-    public double evaluate(ArrayList<String> currExpression)
+    public double evaluate(String currExpression)
     {
         // Changed to return to fix error, MUST BE CHANGED
-        return Double.parseDouble(infixToRPN(currExpression.get(0)));
+        return Double.parseDouble(infixToRPN(currExpression));
     }
 
     private static String evalRPN(String expr)
