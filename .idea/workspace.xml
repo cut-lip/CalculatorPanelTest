@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Continue to construct expression generator">
+    <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Finalize expression generator">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CalculatorPanelEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelEval.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OracleEval.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +67,7 @@
       <workItem from="1669780941062" duration="2630000" />
       <workItem from="1669832527179" duration="11000" />
       <workItem from="1669832591596" duration="212000" />
-      <workItem from="1669845460431" duration="16547000" />
+      <workItem from="1669845460431" duration="17687000" />
     </task>
     <task id="LOCAL-00001" summary="Build framework for test client.">
       <created>1668975257511</created>
@@ -106,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669697669756</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Finalize expression generator">
+      <created>1669863898486</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669863898486</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -127,7 +132,8 @@
     <MESSAGE value="Build framework for test client." />
     <MESSAGE value="Begin to construct expression generator." />
     <MESSAGE value="Continue to construct expression generator" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continue to construct expression generator" />
+    <MESSAGE value="Finalize expression generator" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalize expression generator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

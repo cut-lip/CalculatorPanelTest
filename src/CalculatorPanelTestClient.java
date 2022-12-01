@@ -54,23 +54,7 @@ public class CalculatorPanelTestClient {
 
         // Seek user input for number of test cases, checking for correct input
         // (positive whole number)
-        Scanner sc = new Scanner(System.in);
-        boolean gotInput = false;
-        long testCases = 0;
-        while (!gotInput) {
-            try {
-                testCases = sc.nextLong();
-                if (testCases < 0)
-                {
-                    System.out.println("Please enter a positive value:");
-                    continue;
-                }
-                gotInput = true;
-            } catch (Exception InputMismatchException) {
-                System.out.println("Please enter a positive whole number:");
-                sc.next();
-            }
-        }
+        long testCases = inputTestCases();
 
         // Create Map of states to allowed input
         Map<String, String[]> inputCheck = createSymbolMap();
@@ -84,9 +68,6 @@ public class CalculatorPanelTestClient {
         CalculatorPanelEval calcEval = new CalculatorPanelEval();
         double r2 = 0;
 
-        Random r = new Random();
-        long oracleCorrect = 0, oracleExceptions = 0, calcPanelCorrect = 0, calcPanelExceptions = 0;
-
         // Create file "calc_test_cases.txt" to write test cases to
         PrintWriter writer = null;
         try {
@@ -98,10 +79,12 @@ public class CalculatorPanelTestClient {
         }
         assert writer != null;
 
+        long oracleCorrect = 0, oracleExceptions = 0, calcPanelCorrect = 0, calcPanelExceptions = 0;
+
         // Generate test cases and compare results from both evaluators
         for (long i = 0; i < testCases; i++)
         {
-            String testExpr = generateExpression(r, inputCheck); // Use expression generator here
+            String testExpr = generateExpression(inputCheck); // Use expression generator here
             writer.println(testExpr);
             testExpr = testExpr.replace("{", "(").replace("}", ")")
                     .replace("cot", "1 / tan");
@@ -142,7 +125,32 @@ public class CalculatorPanelTestClient {
         double badClassificationRatio = ((double)oracleCorrect / (double)calcPanelCorrect);
         System.out.println("    CalcPanel incorrectly classified " + badClassificationRatio +
                 "% (" + (calcPanelCorrect - oracleCorrect) +
-                ") test cases as syntactically correct (when compared to Oracle's classification).");
+                " out of " + calcPanelCorrect +
+                ") test cases as syntactically correct\n    (when compared to Oracle's classification).");
+    }
+
+    // SEEK USER INPUT FOR NUMBER OF TEST CASES TO GENERATE
+    private static long inputTestCases()
+    {
+        Scanner sc = new Scanner(System.in);
+        boolean gotInput = false;
+        long testCases = 0;
+        while (!gotInput) {
+            try {
+                testCases = sc.nextLong();
+                if (testCases < 0)
+                {
+                    System.out.println("Please enter a positive value:");
+                    continue;
+                }
+                gotInput = true;
+            } catch (Exception InputMismatchException) {
+                System.out.println("Please enter a positive whole number:");
+                sc.next();
+            }
+        }
+
+        return testCases;
     }
 
     // CONSTRUCT A MAP OF PREVIOUS INPUT TO NEXT ALLOWED INPUTS
@@ -159,12 +167,14 @@ public class CalculatorPanelTestClient {
     }
 
     // GENERATE A RANDOM, SYNTACTICALLY CORRECT MATHEMATICAL EXPRESSION
-    private static String generateExpression(Random r, Map<String, String[]> inputCheck)
+    private static String generateExpression(Map<String, String[]> inputCheck)
     {
         // Construct StringBuilder for generating expression
         StringBuilder sb = new StringBuilder();
         // Construct Stack to track parenthesis order
         Stack<String> parenStack = new Stack<>();
+
+        Random r = new Random();
 
         // Randomly determine size of generated expression
         int exprSize = r.nextInt(28) + 3;
