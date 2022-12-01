@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Continue to construct expression generator">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CalculatorPanelTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CalculatorPanelTest.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculatorPanelEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelEval.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ExpressionGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OracleEval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/OracleEval.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OracleEval.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +41,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/cutli/JavaProjects/CalculatorPanelTest/src",
+    "last_opened_file_path": "C:/Users/cutli/Calc3",
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -67,7 +64,12 @@
       <workItem from="1668973095874" duration="2346000" />
       <workItem from="1669098341657" duration="2412000" />
       <workItem from="1669600527601" duration="5085000" />
-      <workItem from="1669658946012" duration="24629000" />
+      <workItem from="1669658946012" duration="25016000" />
+      <workItem from="1669745424343" duration="706000" />
+      <workItem from="1669780941062" duration="2630000" />
+      <workItem from="1669832527179" duration="11000" />
+      <workItem from="1669832591596" duration="212000" />
+      <workItem from="1669845460431" duration="16547000" />
     </task>
     <task id="LOCAL-00001" summary="Build framework for test client.">
       <created>1668975257511</created>
@@ -97,7 +99,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669606491343</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Continue to construct expression generator">
+      <created>1669697669756</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1669697669756</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

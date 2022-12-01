@@ -6,6 +6,8 @@ import java.util.Stack;
 // Class to evaluate a mathematical expression using the CalculatorPanel evaluator functions,
 // which are based on Dijkstra's Shunting Yard Algorithm.
 
+// This class's methods are taken from the CalculatorPanel application's evaluation functionality.
+
 public class CalculatorPanelEval {
 
     // Higher indices indicate higher precedence (precedence = index / 2)
@@ -19,8 +21,7 @@ public class CalculatorPanelEval {
     // Evaluate using CalculatorPanel functionality
     public double evaluate(String currExpression)
     {
-        // Changed to return to fix error, MUST BE CHANGED
-        return Double.parseDouble(infixToRPN(currExpression));
+        return Double.parseDouble(evalRPN(infixToRPN(currExpression)));
     }
 
     private static String evalRPN(String expr)
