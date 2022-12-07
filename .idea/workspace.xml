@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Finalize expression generator">
+    <list default="true" id="320a4399-236d-431c-a55a-ffe233fbbc99" name="Changes" comment="Add input test cases private method">
+      <change afterPath="$PROJECT_DIR$/src/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CalculatorPanelTestClient.java" afterDir="false" />
     </list>
@@ -67,7 +68,7 @@
       <workItem from="1669780941062" duration="2630000" />
       <workItem from="1669832527179" duration="11000" />
       <workItem from="1669832591596" duration="212000" />
-      <workItem from="1669845460431" duration="17687000" />
+      <workItem from="1669845460431" duration="25533000" />
     </task>
     <task id="LOCAL-00001" summary="Build framework for test client.">
       <created>1668975257511</created>
@@ -111,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669863898486</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Add input test cases private method">
+      <created>1669864892576</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1669864892576</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,7 +141,8 @@
     <MESSAGE value="Begin to construct expression generator." />
     <MESSAGE value="Continue to construct expression generator" />
     <MESSAGE value="Finalize expression generator" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finalize expression generator" />
+    <MESSAGE value="Add input test cases private method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add input test cases private method" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

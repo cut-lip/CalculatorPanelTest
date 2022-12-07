@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -19,7 +21,7 @@ public class CalculatorPanelTestClient {
 
     // This global constant indicates the range of integers that will be used to generate expressions
     // [ (-DIGIT_RANGE / 2), (DIGIT_RANGE - DIGIT_RANGE / 2) ]
-    final static int DIGIT_RANGE = 100000;
+    final static long DIGIT_RANGE = 100000000;
 
     // These global
     final static String[] OPEN_SYMBOLS = {"(", "{", "digit", "-u", "sin (", "cos (", "tan (" ,
@@ -38,6 +40,7 @@ public class CalculatorPanelTestClient {
     public static void main(String[] args)
     {
         System.out.println("""
+                
                 Welcome to the CalculatorPanel Test Client.
                 
                 This client will evaluate the correctness of Calculator Panel's evaluation function,
@@ -56,77 +59,19 @@ public class CalculatorPanelTestClient {
         // (positive whole number)
         long testCases = inputTestCases();
 
-        // Create Map of states to allowed input
-        Map<String, String[]> inputCheck = createSymbolMap();
-
-        // Construct test case evaluators:
-        // Oracle Evaluator
-        DoubleEvaluator evaluator = new DoubleEvaluator();
-        Double r1 = null;
-
-        // CalculatorPanel Evaluator
-        CalculatorPanelEval calcEval = new CalculatorPanelEval();
-        double r2 = 0;
-
         // Create file "calc_test_cases.txt" to write test cases to
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter("calc_test_cases.txt", StandardCharsets.UTF_8);
-        } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException caught.");
-        } catch (IOException e) {
-            System.out.println("IOException caught.");
-        }
-        assert writer != null;
-
-        long oracleCorrect = 0, oracleExceptions = 0, calcPanelCorrect = 0, calcPanelExceptions = 0;
+        PrintWriter writer = createOutputWriter();
 
         // Generate test cases and compare results from both evaluators
-        for (long i = 0; i < testCases; i++)
-        {
-            String testExpr = generateExpression(inputCheck); // Use expression generator here
-            writer.println(testExpr);
-            testExpr = testExpr.replace("{", "(").replace("}", ")")
-                    .replace("cot", "1 / tan");
+        // stats: [0]=oracleCorrect, [1]=oracleExceptions, [2]=calcPanelCorrect,
+        // [3]=calcPanelExceptions, [4]=wrongEval
+        long[] stats = compareEvaluators(testCases, writer);
 
-            // Compare results of different evaluators
-            // Evaluate an expression
-            try {
-                r1 = evaluator.evaluate(testExpr);
-                ++oracleCorrect;
-            } catch (Exception IllegalArgumentException)
-            {
-                //System.out.println("Mathematically undefined result!");
-                ++oracleExceptions;
-            }
-
-            try {
-                r2 = calcEval.evaluate(testExpr);
-                ++calcPanelCorrect;
-            } catch (Exception NumberFormatException)
-            {
-                //System.out.println("Mathematically undefined result!");
-                ++calcPanelExceptions;
-            }
-        }
-
+        // Close file being written to
         writer.close();
+
         // Provide statistics for overall result of test
-        System.out.println("\nOut of " + testCases + " test cases, the oracle evaluated:");
-        System.out.println("    " + oracleCorrect + " expressions as mathematically correctly");
-        System.out.println("    " + oracleExceptions + " expressions as mathematically incorrect");
-
-        System.out.println("\nOut of " + testCases + " test cases, the calculator evaluated:");
-        System.out.println("    " + calcPanelCorrect + " expressions as mathematically correctly");
-        System.out.println("    " + calcPanelExceptions + " expressions as mathematically incorrect");
-
-        System.out.println("\nACCURACY STATISTICS:");
-
-        double badClassificationRatio = ((double)oracleCorrect / (double)calcPanelCorrect);
-        System.out.println("    CalcPanel incorrectly classified " + badClassificationRatio +
-                "% (" + (calcPanelCorrect - oracleCorrect) +
-                " out of " + calcPanelCorrect +
-                ") test cases as syntactically correct\n    (when compared to Oracle's classification).");
+        reportStatistics(testCases, stats);
     }
 
     // SEEK USER INPUT FOR NUMBER OF TEST CASES TO GENERATE
@@ -135,6 +80,8 @@ public class CalculatorPanelTestClient {
         Scanner sc = new Scanner(System.in);
         boolean gotInput = false;
         long testCases = 0;
+
+        // Check for correct input (positive whole number)
         while (!gotInput) {
             try {
                 testCases = sc.nextLong();
@@ -166,6 +113,122 @@ public class CalculatorPanelTestClient {
         return inputCheck;
     }
 
+    private static PrintWriter createOutputWriter()
+    {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("calc_test_cases.txt", StandardCharsets.UTF_8);
+        } catch (FileNotFoundException e) {
+            System.out.println("FileNotFoundException caught.");
+        } catch (IOException e) {
+            System.out.println("IOException caught.");
+        }
+
+        assert writer != null;
+        return writer;
+    }
+
+    // COMPARE THE EVALUATIONS OF THE ORACLE AND THE CALCULATOR ON THE TEST CASES
+    private static long[] compareEvaluators(long testCases, PrintWriter writer)
+    {
+        // Create Map of states to allowed input
+        Map<String, String[]> inputCheck = createSymbolMap();
+
+        // Construct test case evaluators:
+        // Oracle Evaluator
+        DoubleEvaluator evaluator = new DoubleEvaluator();
+        Double r1 = null;
+        // CalculatorPanel Evaluator
+        CalculatorPanelEval calcEval = new CalculatorPanelEval();
+        double r2 = 0;
+
+        // stats: [0]=oracleCorrect, [1]=oracleExceptions, [2]=calcPanelCorrect,
+        // [3]=calcPanelExceptions, [4]=wrongEval
+        long[] stats = new long[5];
+
+        // Flags to determine if both evaluators evaluated a given expression
+        boolean calcEvaled = false, oracleEvaled = false;
+
+        // Generate and compare test expressions
+        for (long i = 0; i < testCases; i++)
+        {
+            String testExpr = generateExpression(inputCheck);   // Generate expression
+            writer.println(testExpr);                           // Write Expression to file
+
+            // Format expression for evaluators
+            testExpr = testExpr.replace("{", "(").replace("}", ")")
+                    .replace("cot", "1 / tan");
+
+            // Compare results of different evaluators
+            try {
+                r1 = evaluator.evaluate(testExpr);      // Oracle evaluator
+                ++stats[0];
+                oracleEvaled = true;
+            } catch (IllegalArgumentException e)
+            {
+                ++stats[1];     // Mathematically undefined result!
+            }
+            try {
+                r2 = calcEval.evaluate(testExpr);       // Calculator evaluator
+                ++stats[2];
+                calcEvaled = true;
+            } catch (NumberFormatException e)
+            {
+                ++stats[3];     // Mathematically undefined result!
+            }
+
+            // Determine if the calculator returned the same value as the oracle
+            if ((oracleEvaled && calcEvaled) && (r1 != r2))
+            {
+                ++stats[4];
+                oracleEvaled = false;
+                calcEvaled = false;
+            }
+        }
+
+        return stats;
+    }
+
+    // CALCULATE AND DISPLAY STATISTICS OF THE EVALUATION ON THE CONSOLE
+    private static void reportStatistics(long testCases, long[] stats)
+    {
+        // stats: [0]=oracleCorrect, [1]=oracleExceptions, [2]=calcPanelCorrect,
+        // [3]=calcPanelExceptions, [4]=wrongEval
+        System.out.println("\nOut of " + testCases + " test cases, the oracle evaluated:");
+        System.out.println("    " + stats[0] + " expressions as mathematically correctly");
+        System.out.println("    " + stats[1] + " expressions as mathematically incorrect");
+
+        System.out.println("\nOut of " + testCases + " test cases, the calculator evaluated:");
+        System.out.println("    " + stats[2] + " expressions as mathematically correctly");
+        System.out.println("    " + stats[3] + " expressions as mathematically incorrect");
+
+        System.out.println("\nACCURACY STATISTICS:");
+
+        double badClassRatio = 100 - (100.0 * ((double)stats[0] / (double)stats[2]));
+        double badClassRatioRound = round(badClassRatio, 2);
+        System.out.println("    CalcPanel incorrectly classified " + badClassRatioRound +
+                "% (" + (stats[2] - stats[0]) +
+                " out of " + stats[2] +
+                ") test cases as syntactically correct\n    (when compared to Oracle's classification).");
+
+        double badEvalRatio = 100.0 * ((double)stats[4] / (double)stats[0]);
+        double badEvalRatioRound = round(badEvalRatio, 2);
+        System.out.println("\n    CalcPanel incorrectly evaluated " + badEvalRatioRound +
+                "% (" + stats[4] +
+                " out of " + stats[0] +
+                ") test cases.\n    (when compared to Oracle's evaluation).");
+
+    }
+
+    // ROUND DOUBLE VALUES TO TWO DECIMAL PLACES
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
     // GENERATE A RANDOM, SYNTACTICALLY CORRECT MATHEMATICAL EXPRESSION
     private static String generateExpression(Map<String, String[]> inputCheck)
     {
@@ -183,7 +246,7 @@ public class CalculatorPanelTestClient {
 
         if (temp.equals("digit"))
         {
-            long tempDigit = (r.nextInt(DIGIT_RANGE) - DIGIT_RANGE / 2);
+            long tempDigit = (r.nextLong(DIGIT_RANGE) - DIGIT_RANGE / 2);
             if (tempDigit < 0)
             {
                 // Convert unary negative to "(-1) *" for use with CalculatorPanel Evaluator
@@ -193,7 +256,7 @@ public class CalculatorPanelTestClient {
             }
             else
             {
-                sb.append(r.nextInt(DIGIT_RANGE) - DIGIT_RANGE / 2);
+                sb.append(r.nextLong(DIGIT_RANGE) - DIGIT_RANGE / 2);
                 sb.append(" ");
             }
         }
@@ -202,12 +265,16 @@ public class CalculatorPanelTestClient {
             // Track which parens are being used
             if (Arrays.binarySearch(OPEN_PARENS, temp) >= 0 || Arrays.binarySearch(UNARY_OPERATORS, temp) >= 0)
             {
-                if (temp.equals("-u")) {
-                    // Don't add for unary minus
-                } else if (temp.equals("{"))
-                    parenStack.push("{");
-                else
-                    parenStack.push("(");
+                switch (temp) {
+                    case "-u":
+                        break;
+                    case "{":
+                        parenStack.push("{");
+                        break;
+                    default:
+                        parenStack.push("(");
+                        break;
+                }
             }
 
             sb.append(temp);
@@ -231,7 +298,7 @@ public class CalculatorPanelTestClient {
                 sb.deleteCharAt(sb.length() - 1);
 
                 // Append decimal and digit to string
-                String tempDec = "." + (r.nextInt(DIGIT_RANGE) + " ");
+                String tempDec = "." + (r.nextLong(DIGIT_RANGE) + " ");
                 sb.append(tempDec);
                 count++;
                 continue;
@@ -239,7 +306,7 @@ public class CalculatorPanelTestClient {
 
             if (temp.equals("digit"))
             {
-                long tempDigit = (r.nextInt(DIGIT_RANGE) - DIGIT_RANGE / 2);
+                long tempDigit = (r.nextLong(DIGIT_RANGE) - DIGIT_RANGE / 2);
                 if (tempDigit < 0)
                 {
                     // Convert unary negative to "(-1) *" for use with CalculatorPanel Evaluator
@@ -249,7 +316,7 @@ public class CalculatorPanelTestClient {
                 }
                 else
                 {
-                    sb.append(r.nextInt(DIGIT_RANGE) - DIGIT_RANGE / 2);
+                    sb.append(r.nextLong(DIGIT_RANGE) - DIGIT_RANGE / 2);
                     sb.append(" ");
                     count++;
                 }
@@ -283,7 +350,7 @@ public class CalculatorPanelTestClient {
         // Append digit if necessary
         if (!temp.equals("digit") && !temp.equals(")") && !temp.equals("}"))
         {
-            sb.append(r.nextInt(DIGIT_RANGE) - DIGIT_RANGE/2);
+            sb.append(r.nextLong(DIGIT_RANGE) - DIGIT_RANGE/2);
             sb.append(" ");
         }
 
